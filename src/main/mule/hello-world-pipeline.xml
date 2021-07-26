@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6e03454d-bfef-4ceb-9710-1308db7b6b62" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="hello-world-pipelineFlow" doc:id="ba00b82f-0bfc-4883-ad94-27657ad19190" >
+		<http:listener doc:name="Listener" doc:id="a6a0637b-b9a3-46e2-8d72-096b67b728f1" config-ref="HTTP_Listener_config" path="/hello-world"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7c9172c8-789d-4f6e-9070-ccf6aa828062" message="Log the Pipeline Payload"/>
+		<ee:transform doc:name="Create Response" doc:id="7f691181-c47a-4771-b025-1f7debb8f6e0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"devOps": "Pipeline",
+	"createdBy": "Nikhil"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
